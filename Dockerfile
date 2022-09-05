@@ -1,4 +1,4 @@
-FROM debian:buster as builder
+FROM debian:buster
 
 # intall gcc and supporting packages
 RUN apt-get update && apt-get install -yq make gcc gettext autopoint bison libtool automake pkg-config
@@ -16,8 +16,5 @@ RUN ./autogen.sh && ./configure
 RUN make LDFLAGS="--static" nsenter
 
 # Final image
-FROM scratch
-
-COPY --from=builder /code/util-linux/nsenter /
-
+COPY /code/util-linux/nsenter /
 ENTRYPOINT ["/nsenter"]
